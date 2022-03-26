@@ -1,0 +1,4 @@
+github.com/baijum/servicebinding v0.1.0 h1:l53gNAF5lVD6ccKqt46oI6U55urmrom52MIpHu9aciY=
+github.com/baijum/servicebinding v0.1.0/go.mod h1:Lt/5PORdij5ptVqhzBwSZZ4lm+XdkD7r2836gYkk6Lg=
+github.com/elastic/go-elasticsearch/v7 v7.17.1 h1:49mHcHx7lpCL8cW1aioEwSEVKQF3s+Igi4Ye/QTWwmk=
+github.com/elastic/go-elasticsearch/v7 v7.17.1/go.mod h1:OJ4wdbtDNk5g503kvlHLyErCgQwwzmDtaFC4XyOxXA4=
