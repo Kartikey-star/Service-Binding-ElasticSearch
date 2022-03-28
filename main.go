@@ -8,12 +8,36 @@ import (
 	"encoding/json"
 	"log"
 )
+type Student struct {
+	Name         string  `json:"name"`
+	Age          int64   `json:"age"`
+	AverageScore float64 `json:"average_score"`
+}
+func (esclient *elastic.Client)Insert(){
+	ctx := context.Background()
 
-func main() {
-	
-	var (
-		r  map[string]interface{}
-	)
+	//creating student object
+	newStudent := Student{
+		Name:         "Gopher doe",
+		Age:          10,
+		AverageScore: 99.9,
+	}
+
+	dataJSON, err := json.Marshal(newStudent)
+	js := string(dataJSON)
+	ind, err := esclient.Index().
+		Index("students").
+		BodyJson(js).
+		Do(ctx)
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("[Elastic][InsertProduct]Insertion Successful")
+}
+
+func GetESClient()(*elastic.Client, error){
 	sb, err := binding.NewServiceBinding()
 	if err != nil {
 		_, _ = fmt.Fprintln(os.Stderr, "Could not read service bindings")
@@ -48,7 +72,20 @@ func main() {
 		_, _ = fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	res, err := es.Info()
+}
+
+func main() {
+	
+	var (
+		r  map[string]interface{}
+	)
+	esclient, err := GetESClient()
+	if err != nil {
+		fmt.Println("Error initializing : ", err)
+		panic("Client fail ")
+	}
+	
+	res, err := esclient.Info()
 	if err != nil {
 		log.Fatalf("Error getting response: %s", err)
 	}
@@ -63,4 +100,5 @@ func main() {
 	// Print client and server version numbers.
 	log.Printf("Response of info:",r)
 	// ...
+	esclient.Insert()
 }
