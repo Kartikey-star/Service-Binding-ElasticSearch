@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -36,13 +37,14 @@ func main() {
 	port, _ := bindings.Get(b[0], "port")
 	username, _ := bindings.Get(b[0], "username")
 	password, _ := bindings.Get(b[0], "password")
+
 	address := fmt.Sprintf("%v:%v", host, port)
 	cfg := elasticsearch.Config{
 		Addresses: []string{
 			address,
 		},
 		Username: username,
-		Password: password,
+		Password: url.QueryEscape(password),
 	}
 	es, err := elasticsearch.NewClient(cfg)
 	if err != nil {
