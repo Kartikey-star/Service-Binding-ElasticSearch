@@ -38,7 +38,7 @@ func main() {
 	username, _ := bindings.Get(b[0], "username")
 	password, _ := bindings.Get(b[0], "password")
 
-	address := fmt.Sprintf("%v:%v", host, port)
+	address := fmt.Sprintf("http://%v:%v", host, port)
 	cfg := elasticsearch.Config{
 		Addresses: []string{
 			address,
