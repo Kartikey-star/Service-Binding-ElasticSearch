@@ -20,6 +20,12 @@ jobs:
 
     - name: Build
       run: go build -v ./...
-
-    - name: Test
-      run: go test -v ./...
+  publish-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build and Publish Docker Image
+      run: |
+        docker build -t quay.io/kmamgain/elastic:latest .
+        echo "${{ secrets.QUAY_PASSWORD }}" | docker login qyay.io -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
+        docker push quay.io/kmamgain/elastic:latest
