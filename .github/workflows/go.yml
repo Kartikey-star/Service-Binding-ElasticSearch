@@ -27,5 +27,5 @@ jobs:
     - name: Build and Publish Docker Image
       run: |
         docker build -t quay.io/kmamgain/elastic:latest .
-        echo "${{ secrets.QUAY_PASSWORD }}" | docker login qyay.io -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
+        echo "${{ secrets.QUAY_PASSWORD }}" | docker login quay.io -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
         docker push quay.io/kmamgain/elastic:latest
