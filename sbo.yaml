@@ -1,0 +1,17 @@
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: elastic-binding-sed
+spec:
+  application:
+    group: apps
+    name: elastic-app
+    resource: deployments
+    version: v1
+  bindAsFiles: true
+  detectBindingResources: true
+  services:
+    - group: ""
+      kind: Secret
+      name: io.servicebinding.els-sed
+      version: v1
