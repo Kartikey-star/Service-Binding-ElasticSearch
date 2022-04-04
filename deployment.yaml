@@ -1,23 +1,27 @@
+---
+# tag::app-deployment[]
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: elastic-app
   labels:
-    elastic-app
+    app: elastic-app
+  annotations:
+    service.binding/type: "elasticsearch"
 spec:
   replicas: 1
   selector:
-    matchLabels: elastic-app
+    matchLabels:
+      app: elastic-app
   template:
     metadata:
-      annotations: {}
-      labels: elastic-app
+      labels:
+        app: elastic-app
     spec:
-      imagePullSecrets: []
       containers:
-        - image: "docker.io/library/elastic_connect"
+        - name: app
+          image: quay.io/kmamgain/elastic:latest
           imagePullPolicy: Always
           ports:
-            - name: http
-              containerPort: 3000
-              protocol: TCP
+          - name: http
+            containerPort: 3000
