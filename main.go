@@ -4,26 +4,21 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 
-	"github.com/nebhale/client-go/bindings"
-
 	"encoding/json"
 	"log"
 	"os"
 
+	"github.com/gorilla/mux"
+	"github.com/nebhale/client-go/bindings"
+
 	"github.com/elastic/go-elasticsearch/v7"
 )
-type Student struct {
-	Name         string  `json:"name"`
-	Age          int64   `json:"age"`
-	AverageScore float64 `json:"average_score"`
-}
-func (esclient *elastic.Client)Insert(){
-	ctx := context.Background()
 
 func main() {
 
@@ -39,8 +34,8 @@ func main() {
 	}
 	host, _ := bindings.Get(b[0], "host")
 	port, _ := bindings.Get(b[0], "port")
-	username, _ := bindings.Get(b[0], "user")
-	password, _ := bindings.Get(b[0], "host")
+	username, _ := bindings.Get(b[0], "username")
+	password, _ := bindings.Get(b[0], "password")
 	address := fmt.Sprintf("%v:%v", host, port)
 	cfg := elasticsearch.Config{
 		Addresses: []string{
@@ -54,20 +49,7 @@ func main() {
 		_, _ = fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-}
-
-func main() {
-	
-	var (
-		r  map[string]interface{}
-	)
-	esclient, err := GetESClient()
-	if err != nil {
-		fmt.Println("Error initializing : ", err)
-		panic("Client fail ")
-	}
-	
-	res, err := esclient.Info()
+	res, err := es.Info()
 	if err != nil {
 		log.Fatalf("Error getting response: %s", err)
 	}
@@ -171,6 +153,15 @@ func main() {
 	for _, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
 		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
 	}
+	router := mux.NewRouter()
+
+	router.HandleFunc("/status", StatusHandler).Methods("GET")
+	http.ListenAndServe(":3000", router)
+}
+func StatusHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"build": "1"}`))
 }
 
 // Client: 8.0.0-SNAPSHOT

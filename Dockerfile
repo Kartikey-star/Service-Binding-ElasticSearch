@@ -1,6 +1,4 @@
-# The base go-image
-FROM golang:1.14-alpine
- 
+FROM golang:1.17 as builder
 # Create a directory for the app
 RUN mkdir /app
  
@@ -14,4 +12,5 @@ WORKDIR /app
 # go build will build an executable file named server in the current directory
 RUN go build -o server . 
 # Run the server
-CMD [ "/app/server" ]
+EXPOSE 3000
+ENTRYPOINT [ "/app/server" ]

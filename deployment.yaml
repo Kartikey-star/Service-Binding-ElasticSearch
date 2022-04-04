@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elastic-app
+  labels:
+    elastic-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels: elastic-app
+  template:
+    metadata:
+      annotations: {}
+      labels: elastic-app
+    spec:
+      imagePullSecrets: []
+      containers:
+        - image: "docker.io/library/elastic_connect"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
