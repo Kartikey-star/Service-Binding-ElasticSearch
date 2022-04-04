@@ -17,6 +17,13 @@ import (
 
 	"github.com/elastic/go-elasticsearch/v7"
 )
+type Student struct {
+	Name         string  `json:"name"`
+	Age          int64   `json:"age"`
+	AverageScore float64 `json:"average_score"`
+}
+func (esclient *elastic.Client)Insert(){
+	ctx := context.Background()
 
 func main() {
 
@@ -47,7 +54,20 @@ func main() {
 		_, _ = fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)
 	}
-	res, err := es.Info()
+}
+
+func main() {
+	
+	var (
+		r  map[string]interface{}
+	)
+	esclient, err := GetESClient()
+	if err != nil {
+		fmt.Println("Error initializing : ", err)
+		panic("Client fail ")
+	}
+	
+	res, err := esclient.Info()
 	if err != nil {
 		log.Fatalf("Error getting response: %s", err)
 	}
