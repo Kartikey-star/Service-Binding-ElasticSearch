@@ -2,7 +2,7 @@
 FROM golang:1.17 as builder
 # Create a directory for the app
 RUN apt-get update -y
-RUN apt-get install -y golang elasticsearch
+RUN apt-get install -y  elasticsearch
 RUN mkdir /app
  
 # Copy all files from the current directory to the app directory
