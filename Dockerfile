@@ -2,8 +2,8 @@
 FROM golang:1.17 as builder
 # Create a directory for the app
 RUN apt-get update -y && apt-get install -y apt-transport-https
-RUN sudo apt-get install -y openjdk-8-jdk
-RUN sudo apt-get install -y  elasticsearch
+RUN apt-get install -y golang openjdk-8-jdk
+RUN apt-get install -y golang elasticsearch
 RUN mkdir /app
  
 # Copy all files from the current directory to the app directory
