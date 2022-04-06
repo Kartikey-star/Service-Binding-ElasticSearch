@@ -13,5 +13,5 @@ spec:
   services:
     - group: ""
       kind: Secret
-      name: io.servicebinding.els-sed
+      name: io.servicebinding.elasticsearch-sed
       version: v1
